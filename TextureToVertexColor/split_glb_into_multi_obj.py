@@ -1,9 +1,7 @@
-# "C:\Program Files\Blender Foundation\Blender 4.1\blender.exe" -b -P "split_glb_into_multi_obj 2.py"
+# "C:\Program Files\Blender Foundation\Blender 4.1\blender.exe" -b -P "split_glb_into_multi_obj.py" -- "D:\models\!research\texture to vertex\violin.glb"
 
 # https://docs.blender.org/api/current/bpy.ops.html
 # https://docs.blender.org/api/current/bpy.ops.wm.html      (search for obj_export)
-
-# https://docs.blender.org/api/current/info_overview.html
 # https://docs.blender.org/api/current/bpy.data.html
 # https://docs.blender.org/api/current/bpy.types.Object.html#bpy.types.Object
 # https://docs.blender.org/api/current/bpy.types.Mesh.html#bpy.types.Mesh
@@ -28,14 +26,12 @@ sys.path.insert(0, os.path.dirname(os.path.realpath(__file__)))
 from utils.util_os import *
 from utils.util_export import *
 
-input_file = "D:\\models\\!research\\texture to vertex\\violin.glb"
-#input_file = "D:\\models\\!research\\texture to vertex\\cartoon_many_objects.glb"
-
+input_file = sys.argv[sys.argv.index("--") + 1]  # get arg after "--"
 output_folder = create_unique_folder(str(pathlib.PurePath(os.path.dirname(input_file)).joinpath(os.path.splitext(os.path.basename(input_file))[0])))
 
 print("")
-print("input file: " + input_file)
-print("output folder" + output_folder)
+print("   input file: " + input_file)
+print("output folder: " + output_folder)
 print("")
 
 # Load the file
