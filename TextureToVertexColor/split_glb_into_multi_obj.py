@@ -15,8 +15,6 @@
 # This needs to be done for each object, since .obj doesn't support hierarchies.  If all objects get exported into the same
 # .obj, shapelab turns them into a single combined object
 
-# WARNING: This looks like it's auto creating cube
-
 # to override bpy.context.active_object, you would pass {'active_object': object} to bpy.types.Context.temp_override
 
 import os
