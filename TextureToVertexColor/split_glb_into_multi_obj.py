@@ -23,8 +23,8 @@ import bpy
 # Inject current folder to in memory path so that the scripts in subfolders can be found and imported
 sys.path.insert(0, os.path.dirname(os.path.realpath(__file__)))        
 
-from utils.util_os import *
-from utils.util_export import *
+from utils.filefolder import *
+from utils.export import *
 
 input_file = sys.argv[sys.argv.index("--") + 1]  # get arg after "--"
 output_folder = create_unique_folder(str(pathlib.PurePath(os.path.dirname(input_file)).joinpath(os.path.splitext(os.path.basename(input_file))[0])))
