@@ -10,8 +10,6 @@
 # https://docs.blender.org/api/current/bpy.types.Scene.html#bpy.types.Scene
 # https://docs.blender.org/api/current/bpy.types.RenderSettings.html#bpy.types.RenderSettings
 
-# https://docs.blender.org/api/current/bpy.types.BakeSettings.html#bpy.types.BakeSettings
-
 # NOTE: Blender creates a cube every time (even with -b arg).  To fix this: open blender, delete the cube, File -> Defaults -> Save Startup File
 
 import os
@@ -55,10 +53,7 @@ for obj in bpy.context.scene.objects:
     # if obj.name != "Cube" and obj.data is not None and obj.data.id_type == "MESH":
 
     if is_mesh(obj):
-
-        # TODO: figure out what scenes are.  Make sure the scene that this objects is in is the currently active scene
-
-        #print(bpy.context.mode)
+        #print("child name: " + obj.name + " | data.id_type: " + obj.data.id_type)
 
         obj.select_set(True)
         bpy.context.view_layer.objects.active = obj
@@ -72,19 +67,10 @@ for obj in bpy.context.scene.objects:
         # Bake
         bake_texture_to_vertexcolor()
 
+        # Export as vertex colored .obj
         file_name = get_unique_filename(str(pathlib.PurePath(output_folder).joinpath(obj.name + ".obj")))
-
-        #print("child name: " + obj.name + " | data.id_type: " + obj.data.id_type)
-        print("exporting '" + file_name + "'")
-
         export_selected_obj(file_name)
+
         obj.select_set(False)
 
         print("")
-
-
-
-
-
-
-
