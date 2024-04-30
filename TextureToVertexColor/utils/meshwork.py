@@ -42,7 +42,7 @@ def subdivide_mesh(mesh):
     bpy.ops.mesh.subdivide(number_cuts = 1)         # seems to be the best option
     #bpy.ops.mesh.subdivide(number_cuts = 2)        # starts looking like a quilt
     #bpy.ops.mesh.subdivide(number_cuts = 3)        # looks really bad
-    #bpy.ops.mesh.subdivide(number_cuts = 4)        # also bad
+    #bpy.ops.mesh.subdivide(number_cuts = 4)        # even worse
 
     bpy.ops.object.mode_set(mode='OBJECT')
 

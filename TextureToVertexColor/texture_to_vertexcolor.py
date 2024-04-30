@@ -62,20 +62,15 @@ prep_environment_for_baking()
 
 # Find objects that have a mesh
 for obj in bpy.context.scene.objects:
-    # NOTE: Blender creates a cube every time (even with -b arg).  To fix this: open blender, delete the cube, File -> Defaults -> Save Startup File
-    # if obj.name != "Cube" and obj.data is not None and obj.data.id_type == "MESH":
-
     if is_mesh(obj):
-        #print("child name: " + obj.name + " | data.id_type: " + obj.data.id_type)
-
         obj.select_set(True)
         bpy.context.view_layer.objects.active = obj
 
         # Create more triangles
-        subdivide_mesh(obj.data)
+        subdivide_mesh(obj.data)        # obj.data is the base class of ID, but this instance is a mesh
 
-        # Create colors
-        create_colorattrib(obj.name, obj.data)      # obj.data is the base class of ID, but this instance is a mesh
+        # Create colors (for the bake to write to)
+        create_colorattrib(obj.name, obj.data)
 
         # Bake
         bake_texture_to_vertexcolor()
@@ -85,5 +80,4 @@ for obj in bpy.context.scene.objects:
         export_selected_obj(file_name)
 
         obj.select_set(False)
-
         print("")

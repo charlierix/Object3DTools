@@ -8,6 +8,8 @@
 # https://docs.blender.org/api/current/bpy.types.ShaderNodeTexImage.html
 # https://docs.blender.org/api/current/bpy.types.Image.html#bpy.types.Image
 
+# Extracts all the materials and saves as .png (in a created subfolder)
+
 import bpy
 import os
 import sys
