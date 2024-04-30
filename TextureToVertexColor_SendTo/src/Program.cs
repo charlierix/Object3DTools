@@ -1,14 +1,17 @@
-﻿if (args == null || args.Length == 0)
-    Console.WriteLine("No arguments passed in");
-else
-    foreach (string arg in args)
-        Console.WriteLine(arg);
+﻿using TextureToVertexColor_SendTo;
 
+if (args == null || args.Length == 0)
+{
+    SendToLinkCreator.CreateLink();
+    Console.WriteLine("Created Send To link");
+    Console.WriteLine("To use this program, right click a 3D object file (like a .glb) -> Send to -> Texture To VertexColor");
+    Console.ReadKey();
+    return;
+}
 
-string link_name = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.SendTo), "TextureToVertexColor.lnk");
-string exe_name = System.IO.Path.Combine(Environment.CurrentDirectory, "TextureToVertexColor_SendTo.exe");
+Console.WriteLine("-------- Arguments --------");
 
-Console.WriteLine($"link_name: {link_name}");
-Console.WriteLine($"exe_name: {exe_name}");
+foreach (string arg in args)
+    Console.WriteLine(arg);
 
 Console.ReadKey();
