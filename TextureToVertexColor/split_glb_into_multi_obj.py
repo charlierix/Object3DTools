@@ -15,6 +15,8 @@
 
 # to override bpy.context.active_object, you would pass {'active_object': object} to bpy.types.Context.temp_override
 
+# NOTE: Blender creates a cube every time (even with -b arg).  To fix this: open blender, delete the cube, File -> Defaults -> Save Startup File
+
 import os
 import sys
 import pathlib
@@ -25,6 +27,7 @@ sys.path.insert(0, os.path.dirname(os.path.realpath(__file__)))
 
 from utils.filefolder import *
 from utils.export import *
+from utils.meshwork import *
 
 input_file = sys.argv[sys.argv.index("--") + 1]  # get arg after "--"
 output_folder = create_unique_folder(str(pathlib.PurePath(os.path.dirname(input_file)).joinpath(os.path.splitext(os.path.basename(input_file))[0])))
@@ -40,15 +43,12 @@ open_file(input_file)
 print("")
 
 # Unselect all objects (the export is only the selected objects, so make sure nothing is currently selected)
-for obj in bpy.data.objects:
+for obj in bpy.context.scene.objects:
     obj.select_set(False)
 
 # Find objects that have a mesh
-for obj in bpy.data.objects:
-    # NOTE: Blender creates a cube every time (even with -b arg).  To fix this: open blender, delete the cube, File -> Defaults -> Save Startup File
-    # if obj.name != "Cube" and obj.data is not None and obj.data.id_type == "MESH":
-
-    if obj.data is not None and obj.data.id_type == "MESH":
+for obj in bpy.context.scene.objects:
+    if is_mesh(obj):
         file_name = get_unique_filename(str(pathlib.PurePath(output_folder).joinpath(obj.name + ".obj")))
 
         print("child name: " + obj.name + " | data.id_type: " + obj.data.id_type)

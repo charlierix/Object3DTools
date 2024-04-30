@@ -9,3 +9,6 @@ def prep_environment_for_baking():
 
     # Change bake target to vertex colors
     bpy.context.scene.render.bake.target = 'VERTEX_COLORS'
+
+def bake_texture_to_vertexcolor():
+    return
