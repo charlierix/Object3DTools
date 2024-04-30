@@ -1,4 +1,5 @@
-# "C:\Program Files\Blender Foundation\Blender 4.1\blender.exe" -b -P "extract_texture.py"
+# "C:\Program Files\Blender Foundation\Blender 4.1\blender.exe" -b -P "extract_texture.py" -- "D:\models\!research\texture to vertex\violin.glb"
+
 # https://docs.blender.org/api/current/info_overview.html
 # https://docs.blender.org/api/current/bpy.data.html
 # https://docs.blender.org/api/current/bpy.types.BlendData.html#bpy.types.BlendData
@@ -7,11 +8,11 @@
 # https://docs.blender.org/api/current/bpy.types.ShaderNodeTexImage.html
 # https://docs.blender.org/api/current/bpy.types.Image.html#bpy.types.Image
 
-
 import bpy
 import os
+import sys
 
-input_file = "D:\\models\\!research\\texture to vertex\\alia_summer_outfit.glb"
+input_file = sys.argv[sys.argv.index("--") + 1]  # get arg after "--"
 output_folder = os.path.dirname(input_file) + "\\" + os.path.splitext(os.path.basename(input_file))[0]
 
 print(input_file)
