@@ -18,4 +18,8 @@
     </None>
   </ItemGroup>
 
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="copy &quot;$(OutDir)\*&quot; &quot;..\TextureToVertexColor&quot;" />
+  </Target>
+
 </Project>

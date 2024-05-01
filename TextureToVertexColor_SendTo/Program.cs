@@ -1,6 +1,30 @@
 ﻿using TextureToVertexColor_SendTo;
 using Microsoft.Extensions.Configuration;
 
+
+
+
+// ------- Remaining Work: -------
+
+// call the actual blender script
+
+// pass SubDivide_Count to python script
+
+// pass multi_obj to python script
+
+// iterate args
+
+// test the files in shapelab
+
+// readme
+
+
+
+
+
+
+
+
 try
 {
     // Load appsettings.json
