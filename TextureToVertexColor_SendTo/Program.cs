@@ -1,5 +1,13 @@
 ﻿using System.Diagnostics;
 using TextureToVertexColor_SendTo;
+using Microsoft.Extensions.Configuration;
+
+// Load appsettings.json
+var builder = new ConfigurationBuilder()
+    .SetBasePath(Directory.GetCurrentDirectory())
+    .AddJsonFile("appsettings.json", optional: false);
+
+var config = new AppSettings(builder.Build());
 
 // If no args, create a sendto link
 if (args == null || args.Length == 0)
@@ -11,7 +19,7 @@ if (args == null || args.Length == 0)
     return;
 }
 
-string blender_exe = BlenderFinder.FindBlenderExe();
+string blender_exe = BlenderFinder.FindBlenderExe(config.Blender_Exe);
 if (string.IsNullOrEmpty(blender_exe))
 {
     Console.WriteLine("Couldn't find blender.exe");
@@ -41,16 +49,26 @@ var startInfo = new ProcessStartInfo()
     CreateNoWindow = true,
 };
 
+bool had_error = false;
+
 using (Process process = Process.Start(startInfo))
 {
     while (!process.StandardOutput.EndOfStream)
         Console.WriteLine(process.StandardOutput.ReadLine());
 
     while (!process.StandardError.EndOfStream)
+    {
+        had_error = true;
         Console.WriteLine(process.StandardError.ReadLine());
+    }
 
     process.WaitForExit();
 }
 //}
 
-Console.ReadKey();
+if (had_error || config.Prompt_For_Close)
+{
+    Console.WriteLine();
+    Console.WriteLine("Finished.  Press any key to continue...");
+    Console.ReadKey();
+}
