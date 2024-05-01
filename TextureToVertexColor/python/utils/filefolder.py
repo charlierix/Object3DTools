@@ -17,6 +17,13 @@ def create_unique_folder(folder_name):
         
     raise Exception("Couldn't find a unique name for: " + folder_name)
 
+# Creates the folder if it doesn't exist
+def create_folder(folder_name):
+    if not os.path.exists(folder_name):
+        os.makedirs(folder_name)
+
+    return folder_name
+
 # If the filename passed in already exists, this will try different suffixes until it finds one that doesn't
 def get_unique_filename(file_name):
     for i in range(10000):

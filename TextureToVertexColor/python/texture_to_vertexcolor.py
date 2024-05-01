@@ -1,4 +1,4 @@
-# "C:\Program Files\Blender Foundation\Blender 4.1\blender.exe" -b -P "texture_to_vertexcolor.py" -- "D:\models\!research\texture to vertex\violin.glb"
+# "C:\Program Files\Blender Foundation\Blender 4.1\blender.exe" -b -P "texture_to_vertexcolor.py" -- -s 1 -m True -f "D:\models\!research\texture to vertex\violin.glb"
 
 # https://docs.blender.org/api/current/bpy.data.html
 # https://docs.blender.org/api/current/bpy.types.World.html#bpy.types.World
@@ -12,7 +12,7 @@
 
 # NOTE: Blender creates a cube every time (even with -b arg).  To fix this: open blender, delete the cube, File -> Defaults -> Save Startup File
 
-# Imports a texture mapped file, bakes to vertex colors and exports as .obj files
+# Imports a texture mapped file, bakes to vertex colors and exports as .obj files (or single file based on -m option)
 
 # This also does a subdivide to get more triangles (since only the verticies get colors, extra vertices means better color)
 # I tried bumping up the subdivisions, but it looks really bad (like a waffle iron).  I wonder if smoothing steps between
@@ -30,6 +30,7 @@
 
 import os
 import sys
+import argparse
 import pathlib
 import bpy
 
@@ -41,8 +42,21 @@ from utils.export import *
 from utils.filefolder import *
 from utils.meshwork import *
 
-input_file = sys.argv[sys.argv.index("--") + 1]  # get arg after "--"
-output_folder = create_unique_folder(str(pathlib.PurePath(os.path.dirname(input_file)).joinpath(os.path.splitext(os.path.basename(input_file))[0])))
+# Parse Args
+parser = argparse.ArgumentParser()
+parser.add_argument("-s", "--sub_count", help="Number of subdivisions (making extra triangles)", type=int, default=0)
+parser.add_argument("-m", "--multi_obj", help="True: each object becomes its own .obj file.  False: a single .obj is created (argparse with bool is counterintuitive.  Don't pass -m for false, pass -m True for true.  Passing -m False will still be True)", type=bool, default=False)
+parser.add_argument("-f", "--file", help="The 3D object file to process (that is texture mapped)", required=True)
+
+argv = sys.argv[sys.argv.index('--') + 1:]      # blender ignores everything after -- (those are args for python script)
+args = parser.parse_known_args(argv)[0]
+
+input_file = args.file
+output_folder = ""
+if args.multi_obj:
+    output_folder = create_unique_folder(str(pathlib.PurePath(os.path.dirname(input_file)).joinpath(os.path.splitext(os.path.basename(input_file))[0])))
+else:
+    output_folder = create_folder(str(pathlib.PurePath(os.path.dirname(input_file)).joinpath("vertex colored")))
 
 print("")
 print("   input file: " + input_file)
@@ -67,7 +81,8 @@ for obj in bpy.context.scene.objects:
         bpy.context.view_layer.objects.active = obj
 
         # Create more triangles
-        subdivide_mesh(obj.data)        # obj.data is the base class of ID, but this instance is a mesh
+        if args.sub_count > 0:
+            subdivide_mesh(args.sub_count)
 
         # Create colors (for the bake to write to)
         create_colorattrib(obj.name, obj.data)
@@ -76,8 +91,21 @@ for obj in bpy.context.scene.objects:
         bake_texture_to_vertexcolor()
 
         # Export as vertex colored .obj
-        file_name = get_unique_filename(str(pathlib.PurePath(output_folder).joinpath(obj.name + ".obj")))
-        export_selected_obj(file_name)
+        if args.multi_obj:
+            file_name = get_unique_filename(str(pathlib.PurePath(output_folder).joinpath(obj.name + ".obj")))
+            export_selected_obj(file_name)
 
         obj.select_set(False)
         print("")
+
+# Create single .obj file if multi_obj param is false
+if not args.multi_obj:
+    # Select all meshes
+    for obj in bpy.context.scene.objects:
+        obj.select_set(False)       # everything should already be false, but it doesn't hurt to make sure
+        if is_mesh(obj):
+            obj.select_set(True)
+
+    # Export the file
+    file_name = get_unique_filename(str(pathlib.PurePath(output_folder).joinpath(os.path.splitext(os.path.basename(input_file))[0] + ".obj")))
+    export_selected_obj(file_name)
