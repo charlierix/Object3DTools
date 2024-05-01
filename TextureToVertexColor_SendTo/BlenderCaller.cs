@@ -8,12 +8,8 @@ namespace TextureToVertexColor_SendTo
         {
             var startInfo = new ProcessStartInfo()
             {
-                //FileName = blender_exe,
-                //Arguments = $" -b -P \"texture_to_vertexcolor.py\" -- \"{python_args}\"",
-
-                FileName = "python.exe",
-                Arguments = $"\"{Path.Combine(exe_folder, "python", "tester3.py")}\" -- {python_args}",
-
+                FileName = blender_exe,
+                Arguments = $" -b -P \"{Path.Combine(exe_folder, "python", "texture_to_vertexcolor.py")}\" -- {python_args}",
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
                 UseShellExecute = false,
