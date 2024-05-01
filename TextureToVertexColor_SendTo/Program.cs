@@ -8,12 +8,6 @@ using Microsoft.Extensions.Configuration;
 
 // call the actual blender script
 
-// pass SubDivide_Count to python script
-
-// pass multi_obj to python script
-
-// iterate args
-
 // test the files in shapelab
 
 // readme
@@ -57,18 +51,17 @@ try
     // Run blender with the python script for each file selected (could probably do it in parallel, but in series
     // feels safer)
     bool had_error = false;
-    //foreach (string arg in args)
-    //{
+    foreach (string arg in args)
+    {
+        string python_args = $"-s {config.SubDivide_Count}";
+        if (config.Multi_Obj_Files)
+            python_args += " -m True";
+        python_args += $" -f \"{arg}\"";
 
-    string arg = @"D:\models\!research\texture to vertex\violin.glb";
+        had_error |= BlenderCaller.Call(blender_exe, exe_folder, python_args, config.SubDivide_Count);
 
-    var results = BlenderCaller.Call(blender_exe, exe_folder, arg, config.SubDivide_Count);
-    had_error |= results.had_error;
-
-    foreach (string line in results.output)
-        Console.WriteLine(line);
-
-    //}
+        Console.WriteLine();
+    }
 
     if (had_error || config.Prompt_For_Close)
     {

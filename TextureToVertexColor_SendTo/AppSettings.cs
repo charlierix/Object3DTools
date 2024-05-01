@@ -20,6 +20,8 @@ namespace TextureToVertexColor_SendTo
 
         public int SubDivide_Count => _config.GetValue<int>("subdivide_count");
 
+        public bool Multi_Obj_Files => _config.GetValue<bool>("multi_obj_files");
+
         public bool Prompt_For_Close => _config.GetValue<bool>("prompt_for_close");
     }
 }

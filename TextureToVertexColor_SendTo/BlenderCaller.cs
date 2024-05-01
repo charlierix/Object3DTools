@@ -4,15 +4,15 @@ namespace TextureToVertexColor_SendTo
 {
     public static class BlenderCaller
     {
-        public static (string[] output, bool had_error) Call(string blender_exe, string exe_folder, string filename_3D, int subdivide_count)
+        public static bool Call(string blender_exe, string exe_folder, string python_args, int subdivide_count)
         {
             var startInfo = new ProcessStartInfo()
             {
                 //FileName = blender_exe,
-                //Arguments = $" -b -P \"texture_to_vertexcolor.py\" -- \"{arg}\"",
+                //Arguments = $" -b -P \"texture_to_vertexcolor.py\" -- \"{python_args}\"",
 
                 FileName = "python.exe",
-                Arguments = $"\"{Path.Combine(exe_folder, "python", "tester.py")}\" -- \"{filename_3D}\"",
+                Arguments = $"\"{Path.Combine(exe_folder, "python", "tester3.py")}\" -- {python_args}",
 
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
@@ -21,23 +21,22 @@ namespace TextureToVertexColor_SendTo
             };
 
             bool had_error = false;
-            var output = new List<string>();
 
             using (Process process = Process.Start(startInfo))
             {
                 while (!process.StandardOutput.EndOfStream)
-                    output.Add(process.StandardOutput.ReadLine());
+                    Console.WriteLine(process.StandardOutput.ReadLine());
 
                 while (!process.StandardError.EndOfStream)
                 {
                     had_error = true;
-                    output.Add(process.StandardError.ReadLine());
+                    Console.WriteLine(process.StandardError.ReadLine());
                 }
 
                 process.WaitForExit();
             }
 
-            return (output.ToArray(), had_error);
+            return had_error;
         }
     }
 }
