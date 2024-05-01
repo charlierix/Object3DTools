@@ -13,6 +13,7 @@ namespace TextureToVertexColor_SendTo
         // https://stackoverflow.com/a/14632782
         public static void CreateLink()
         {
+            // %appdata%\Roaming\Microsoft\Windows\SendTo
             string link_name = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.SendTo), "Texture To VertexColor.lnk");
             string exe_name = Path.Combine(Environment.CurrentDirectory, "TextureToVertexColor_SendTo.exe");
 
