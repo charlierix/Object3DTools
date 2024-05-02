@@ -1,25 +1,6 @@
 ﻿using TextureToVertexColor_SendTo;
 using Microsoft.Extensions.Configuration;
 
-
-
-
-// ------- Remaining Work: -------
-
-// call the actual blender script
-
-// test the files in shapelab
-
-// icon
-
-// readme
-
-
-
-
-
-
-
 try
 {
     // Load appsettings.json
