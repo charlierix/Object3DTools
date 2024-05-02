@@ -38,6 +38,7 @@ import bpy
 sys.path.insert(0, os.path.dirname(os.path.realpath(__file__)))        
 
 from utils.baking import *
+from utils.collections import *
 from utils.export import *
 from utils.filefolder import *
 from utils.meshwork import *
@@ -67,6 +68,10 @@ print("")
 open_file(input_file)
 
 print("")
+
+# There are errors if trying to bake an object that is part of a collection that isn't in the viewport.  So set all
+# collections to be part of the viewport
+show_all_collections()
 
 # Unselect all objects (the export is only the selected objects, so make sure nothing is currently selected)
 for obj in bpy.context.scene.objects:
